@@ -1,7 +1,37 @@
 
+//this captures the click on the round start button
+$("#roundStart").click(function(){
+	runRound();
+});
 
+//this captures the click on the vote start button
+$("#voteStart").click(function(){
+	runVote();
+});
+//this function runs a whole round.
+function runRound() {
+	var roundTime = parseInt($("#roundTime").val(),10);
+	var turnTime = parseInt($("#turnTime").val(),10);
+	console.log("round: "+roundTime);
+	console.log("turn: "+turnTime);
+	round(roundTime,turnTime);
+}//end runRound
 
-round(30,5);
+//this function runs the vote timer
+function runVote() {
+	var voteTime = parseInt($("#voteTime").val(),10);
+	var critTime = Math.ceil(voteTime*.2); //what's about 20% of the time?
+	var standbyTime = voteTime-critTime;// whats about 80% of the time?
+
+	console.log("vote: "+voteTime);
+	changeInfoPane("Negotiate and set votes", "standby", 'vote');
+	countSecs(standbyTime).then(() =>{
+		changeInfoPane("Final Vote Approaching...", "warning", 'vote');
+		countSecs(critTime).then(() => {
+				changeInfoPane("COUNT FINAL VOTES", "critical", 'vote');
+		});
+	})
+}//end runVote
 
 //this function instructs players to set up the round, runs several turns in a row and then instructs the round cleanup. it basically represents a whole round.
 //it takes the time of the round (before voting) in seconds, and the time of each turn (in seconds)
@@ -11,31 +41,32 @@ async function round(roundTime, turnTime){
 		await turn(turnTime).then(() => {console.log("turn "+k+" of "+numTurns+" over!")});
 	}
 	console.log("round over!");
+	changeInfoPane("ROUND OVER", "warning", 'round')
 }
 
-//this function changes the GUI during the structure of a turn. it basically represents one whole turn. 
+//this function changes the GUI during the structure of a turn. it basically represents one whole turn.
 //it takes the length of a turn in seconds as an argument
-function turn(length){ 
+function turn(length){
 	var critTime = Math.ceil(length*.2); //what's about 20% of the time?
 	var standbyTime = length-critTime;// whats about 80% of the time?
-	
+
 	return new Promise(function(resolve, reject){
-		countSecs(1).then(()=> { //this is one extra second of waiting for players to switch. 
-			changeInfoPane("Palyer's Turn", "standby");
+		countSecs(1).then(()=> { //this is one extra second of waiting for players to switch.
+			changeInfoPane("Palyer's Turn", "standby", 'round');
 			countSecs(standbyTime).then(() =>{
-				changeInfoPane("get ready...", "warning")
+				changeInfoPane("get ready...", "warning", 'round')
 				countSecs(critTime).then(() =>{
-					changeInfoPane("NEXT PLAYER!", "critical")
+					changeInfoPane("NEXT PLAYER!", "critical", 'round')
 					resolve(true);
 				});
 			});
 		});
 	});//end promise
-	
+
 }//end turn
 
 //this asyncronous function (like all async functions) returns a promise which calls the delay function in a loop with an await keyword
-//so that each subsequent call of delay waits until the promise returned by the previous delay is resolved (after 1 second). in short: it counts seconds as they pass. 
+//so that each subsequent call of delay waits until the promise returned by the previous delay is resolved (after 1 second). in short: it counts seconds as they pass.
 async function countSecs(numOfSecs){
 		for(var i = 0; i < numOfSecs; i++){
 			await delay(1000)("tick: "+i).then(function(result){console.log(result);});
@@ -43,25 +74,36 @@ async function countSecs(numOfSecs){
 }//end countSecs
 
 //this function returns a function, which returns promise and then after waiting 1 second, resolves it.
-//thats why when we call it above, we can add a second paramater area: because those paramaters are for the function that this function returns. 
+//thats why when we call it above, we can add a second paramater area: because those paramaters are for the function that this function returns.
 function delay(ms){
 	return function(result){
 		return new Promise(function(resolve, reject){
 			setTimeout(function(){resolve(result);}, ms);
-		})//end promise constructor 
+		})//end promise constructor
 	}//end result
 }//end delay
 
-//this function just changes the info pane to have different text and backgrounds in order to notify the player. will also play sounds. 
-function changeInfoPane(text, type){
+//this function just changes the info pane to have different text and backgrounds in order to notify the player. will also play sounds.
+function changeInfoPane(text, type, voteorround){
 	if(type == "standby" || type == "warning" || type == "critical"){
-		//remove all possible classes
-		$(".infoPane").removeClass('standby');
-		$(".infoPane").removeClass('warning');
-		$(".infoPane").removeClass('critical');
-		//add the selected class and change the text.
-		$(".infoPane").addClass(type);
-		$(".infoPane").html(text);
-	}
+			if(voteorround == 'round'){
+				//remove all possible classes
+				$(".roundInfoPane").removeClass('standby');
+				$(".roundInfoPane").removeClass('warning');
+				$(".roundInfoPane").removeClass('critical');
+				//add the selected class and change the text.
+				$(".roundInfoPane").addClass(type);
+				$(".roundInfoPane").html(text);
+			}
+			else if(voteorround == 'vote'){
+				//remove all possible classes
+				$(".voteInfoPane").removeClass('standby');
+				$(".voteInfoPane").removeClass('warning');
+				$(".voteInfoPane").removeClass('critical');
+				//add the selected class and change the text.
+				$(".voteInfoPane").addClass(type);
+				$(".voteInfoPane").html(text);
+			}
 	else{console.log("thats not a recognized infopane type...")}
+	}
 }//end changeInfoPane

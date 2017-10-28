@@ -6,14 +6,53 @@
   <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
   </head>
   <body>
-  
-  <div class="infoPane">
-  
-  </div>
-  <div class = "container1">
+<div class="bigContainer">
+  <div class="roundContainer">
+      <div class="roundInfoPane">
 
+      </div>
+      <div class = "roundControls">
+        Turn Time
+        <select id="turnTime" label="Turn Time">
+          <option value="5">5 sec</option>
+          <option value="10">10 sec</option>
+          <option value="15">15 sec</option>
+          <option value="20">20 sec</option>
+          <option value="25">25 sec</option>
+          <option value="30">30 sec</option>
+        </select>
+        Round Time
+        <select id="roundTime" label = "Round Time">
+          <option value="120">2 min</option>
+          <option value="180">3 min</option>
+          <option value="240">4 min</option>
+          <option value="300">5 min</option>
+          <option value="360">6 min</option>
+          <option value="420">7 min</option>
+        </select>
+        <div id="roundStart" class ="btn">Start Round!</div>
+      </div>
   </div>
-  
+
+  <div class="voteContainer">
+      <div class="voteInfoPane">
+
+      </div>
+      <div class = "voteControls">
+        Vote Time
+        <select id="voteTime" label = "vote Time">
+          <option value="30">30 sec</option>
+          <option value="60">1 min</option>
+          <option value="90">1 min 30 sec</option>
+          <option value="120">2 min</option>
+          <option value="150">2 min 30 sec</option>
+          <option value="180">3 min</option>
+        </select>
+        <div id="voteStart" class="btn">Start Vote!</div>
+      </div>
+  </div>
+</div>
+
   <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="

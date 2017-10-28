@@ -1,20 +1,72 @@
 body{
-	display: flex-column;
 	justify-content: center;
 	align-items: center;
 	align-content: center;
-	background: darkblue;
 	text-align: center;
 }
-.container1{
-	background: blue;
+.btn{
+	width: 80%;
+	font-size: 30px;
+	text-align: center;
+	margin: 10%;
+	border-radius: 5px;
+	background: #fff;
+	height: 200px;
+	vertical-align: middle;
+}
+
+.btn:active{
+	border: 2px #aaa solid;
+	background: #ddd;
+	height: 200px;
+}
+
+.bigContainer{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.roundContainer{
+	display: flex;
+	flex-direction: column;
+	background: hotpink;
+}
+.voteContainer{
+	display: flex;
+	flex-direction: column;
+	background: pink;
+}
+
+.roundControls{
+	box-sizing: border-box;
+	padding: 10px;
+	background: #ddd;
 	width: 300px;
 	height: 300px;
 	text-align: center;
+	justify-content: center;
 }
 
-.infoPane{
-	background: #eee;
+.roundInfoPane{
+	background: #bbb;
+	width: 300px;
+	height: 200px;
+	text-align: center;
+}
+
+.voteControls{
+	box-sizing: border-box;
+	padding: 10px;
+	background: #ddd;
+	width: 300px;
+	height: 300px;
+	text-align: center;
+	justify-content: center;
+}
+
+.voteInfoPane{
+	background: #bbb;
 	width: 300px;
 	height: 200px;
 	text-align: center;
