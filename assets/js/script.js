@@ -1,4 +1,12 @@
 
+//these catpture the audio elements on the page for use in JS
+var turnSound = $('#turnSound')[0];
+var roundSound = $('#roundSound')[0];
+var turnSoundAlt = $('#turnSoundAlt')[0];
+var roundSoundAlt = $('#roundSoundAlt')[0];
+var voteSound = $('#voteSound')[0];
+//turnSound.play();
+
 //this captures the click on the round start button
 $("#roundStart").click(function(){
 	runRound();
@@ -28,6 +36,7 @@ function runVote() {
 	countSecs(standbyTime).then(() =>{
 		changeInfoPane("Final Vote Approaching...", "warning", 'vote');
 		countSecs(critTime).then(() => {
+				voteSound.play();
 				changeInfoPane("COUNT FINAL VOTES", "critical", 'vote');
 		});
 	})
@@ -38,9 +47,13 @@ function runVote() {
 async function round(roundTime, turnTime){
 	var numTurns = Math.ceil(roundTime/turnTime);
 	for(var k=0;k<numTurns;k++){
-		await turn(turnTime).then(() => {console.log("turn "+k+" of "+numTurns+" over!")});
+		await turn(turnTime).then(() => {
+			turnSoundAlt.play();
+			console.log("turn "+k+" of "+numTurns+" over!")
+		});
 	}
 	console.log("round over!");
+	roundSoundAlt.play();
 	changeInfoPane("ROUND OVER", "warning", 'round')
 }
 
