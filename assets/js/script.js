@@ -9,6 +9,12 @@ var voteSound = $('#voteSound')[0];
 
 //this captures the click on the round start button
 $("#roundStart").click(function(){
+	turnSoundAlt.play(); // Play the empty element to get control
+  turnSoundAlt.src = 'assets/sounds/Judges_Gavel-SoundBible.com-1321455227.mp3'; // Set the real audio source
+	//now, supposedly, we can play it.
+	roundSoundAlt.play(); // Play the empty element to get control
+  roundSoundAlt.src = 'assets/sounds/Gavel_Bangs_4x-SoundBible.com-744905587.mp3'; // Set the real audio source
+	//now, supposedly, we can play it.
 	runRound();
 });
 
