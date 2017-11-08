@@ -15,7 +15,11 @@ $("#roundStart").click(function(){
 	roundSoundAlt.play(); // Play the empty element to get control for mobile
   roundSoundAlt.src = 'assets/sounds/Gavel_Bangs_4x-SoundBible.com-744905587.mp3'; // Set the real audio source
 	//now, supposedly, we can play it.
-	runRound();
+	runRound().then(() => {
+		$('#roundStart').attr('disabled', false);
+	});
+
+	$('#roundStart').attr('disabled', true);
 });
 
 //this captures the click on the vote start button
@@ -23,7 +27,11 @@ $("#voteStart").click(function(){
 	voteSound.play(); // Play the empty element to get control for mobile
   voteSound.src = "assets/sounds/Air_Horn-SoundBible.com-964603082.mp3"; // Set the real audio source
 	//now, supposedly, we can play it.
-	runVote();
+	runVote().then(() => {
+		$('#voteStart').attr('disabled', false);
+	});
+
+	$('#voteStart').attr('disabled', true);
 });
 //this function runs a whole round.
 function runRound() {
@@ -31,7 +39,7 @@ function runRound() {
 	var turnTime = parseInt($("#turnTime").val(),10);
 	console.log("round: "+roundTime);
 	console.log("turn: "+turnTime);
-	round(roundTime,turnTime);
+	return round(roundTime,turnTime);
 }//end runRound
 
 //this function runs the vote timer
@@ -42,13 +50,14 @@ function runVote() {
 
 	console.log("vote: "+voteTime);
 	changeInfoPane("Negotiate and set votes", "standby", 'vote');
-	countSecs(standbyTime).then(() =>{
+
+	return countSecs(standbyTime).then(() =>{
 		changeInfoPane("Final Vote Approaching...", "warning", 'vote');
-		countSecs(critTime).then(() => {
-				voteSound.play();
-				changeInfoPane("COUNT FINAL VOTES", "critical", 'vote');
-		});
-	})
+		return countSecs(critTime);
+	}).then(() => {
+		voteSound.play();
+		changeInfoPane("COUNT FINAL VOTES", "critical", 'vote');
+	});
 }//end runVote
 
 //this function instructs players to set up the round, runs several turns in a row and then instructs the round cleanup. it basically represents a whole round.
@@ -74,7 +83,7 @@ function turn(length){
 
 	return new Promise(function(resolve, reject){
 		countSecs(1).then(()=> { //this is one extra second of waiting for players to switch.
-			changeInfoPane("Palyer's Turn", "standby", 'round');
+			changeInfoPane("Player's Turn", "standby", 'round');
 			countSecs(standbyTime).then(() =>{
 				changeInfoPane("get ready...", "warning", 'round')
 				countSecs(critTime).then(() =>{
