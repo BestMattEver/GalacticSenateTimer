@@ -17,6 +17,7 @@ $("#roundStart").click(function(){
 	//now, supposedly, we can play it.
 	runRound().then(() => {
 		$('#roundStart').attr('disabled', false);
+		$('#skipTurn').attr('disabled', true);
 	});
 
 	$('#roundStart').attr('disabled', true);
@@ -36,6 +37,29 @@ $("#voteStart").click(function(){
 //this function runs a whole round.
 function runRound() {
 	var roundTime = parseInt($("#roundTime").val(),10);
+
+		switch (roundTime) {
+			case 120 :
+				roundTime = Math.floor(Math.random() * (90 - 150)) + 150;
+			break;
+			case 180 :
+				roundTime = Math.floor(Math.random() * (150 - 210)) + 210;
+			break;
+			case 240 :
+				roundTime = Math.floor(Math.random() * (210 - 270)) + 270;
+			break;
+			case 300 :
+				roundTime = Math.floor(Math.random() * (270 - 330)) + 330;
+			break;
+			case 360 :
+				roundTime = Math.floor(Math.random() * (330 - 390)) + 390;
+			break;
+			case 420 :
+				roundTime = Math.floor(Math.random() * (390 - 450)) + 450;
+			break;
+		}
+console.log(roundTime);
+
 	var turnTime = parseInt($("#turnTime").val(),10);
 	console.log("round: "+roundTime);
 	console.log("turn: "+turnTime);
@@ -81,7 +105,11 @@ function turn(length){
 	var critTime = Math.ceil(length*.2); //what's about 20% of the time?
 	var standbyTime = length-critTime;// whats about 80% of the time?
 
-	return new Promise(function(resolve, reject){
+	$('#skipTurn').attr('disabled', false);
+
+	var prom = new Promise(function(resolve, reject){
+	var skip;
+
 		countSecs(1).then(()=> { //this is one extra second of waiting for players to switch.
 			changeInfoPane("Player's Turn", "standby", 'round');
 			countSecs(standbyTime).then(() =>{
@@ -94,12 +122,20 @@ function turn(length){
 		});
 	});//end promise
 
+	return prom;
+
 }//end turn
 
 //this asyncronous function (like all async functions) returns a promise which calls the delay function in a loop with an await keyword
 //so that each subsequent call of delay waits until the promise returned by the previous delay is resolved (after 1 second). in short: it counts seconds as they pass.
 async function countSecs(numOfSecs){
+
 		for(var i = 0; i < numOfSecs; i++){
+
+			$('#skipTurn').click(function(){
+				i = numOfSecs;
+			});
+
 			await delay(1000)("tick: "+i).then(function(result){console.log(result);});
 		}
 }//end countSecs
