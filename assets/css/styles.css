@@ -22,6 +22,12 @@ body{
 	height: 200px;
 }
 
+.off {
+	display: none;
+}
+.on {
+	display: inline-block;
+}
 .bigContainer{
 	display: flex;
 	flex-direction: row;
@@ -75,15 +81,142 @@ body{
 
 .standby{
 	background: green;
-	font-size: 18px;
+	font-size: 40px;
+	color: white;
+}
+
+.wait{
+	background: blue;
+	font-size: 40px;
+	color: white
 }
 
 .warning{
 	background: goldenrod;
-	font-size: 24px;
+	font-size: 40px;
+	color: red;
 }
 
 .critical{
 	background: red;
-	font-size: 28px;
+	font-size: 40px;
+	color: yellow;
+}
+
+.tapArea {
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	border: 5px black solid;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+/* .tapArea_wait {
+	position: absolute;
+	background: #6B8EB7;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	border: 5px black solid;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+.tapArea_skipTurn {
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	border: 5px black solid;
+	border-radius: 10px;
+	padding: 5px;
+} */
+
+.options {
+	position: absolute;
+	top: 15%;
+	height: 5%;
+	left: 25%;
+	width: 50%;
+	border: 2px black solid;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.marginUp {
+	background: #846899;
+	border-bottom-right-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border: 5px black solid;
+	position: absolute;
+	top: 0px;
+	left: 20%;
+	height: 10%;
+	width: 58%;
+}
+
+.marginDown {
+	background: #846899;
+	border-top-right-radius: 15px;
+	border-top-left-radius: 15px;
+	border: 5px black solid;
+	position: absolute;
+	bottom: 0px;
+	left: 20%;
+	height: 10%;
+	width: 58%;
+}
+
+.marginleft {
+	background: #846899;
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	border: 5px black solid;
+	position: absolute;
+	top: 20%;
+	left: 0px;
+	height: 60%;
+	width: 18%;
+}
+
+.marginRight {
+	background: #846899;
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border: 5px black solid;
+	position: absolute;
+	top: 20%;
+	right: 0px;
+	height: 60%;
+	width: 18%;
+}
+
+.marginTitles {
+	color: yellow;
+	font-size: 50px;
+}
+
+.marginText {
+	color: white;
+	font-size: 30px;
+}
+
+.rotate90CW {
+	/* Safari */
+-webkit-transform: rotate(90deg);
+/* Firefox */
+-moz-transform: rotate(90deg);
+/* IE */
+-ms-transform: rotate(90deg);
+/* Opera */
+-o-transform: rotate(90deg);
+/* Internet Explorer */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+transform: rotate(90deg);
+
 }

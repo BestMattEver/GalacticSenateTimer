@@ -5,7 +5,12 @@ var roundSound = $('#roundSound')[0];
 var turnSoundAlt = $('#turnSoundAlt')[0];
 var roundSoundAlt = $('#roundSoundAlt')[0];
 var voteSound = $('#voteSound')[0];
+var skipped = false;
 //turnSound.play();
+
+$('#skipTurn').click(function(){
+	skipped = true;
+});//end skipped turn click;
 
 //this captures the click on the round start button
 $("#roundStart").click(function(){
@@ -90,54 +95,66 @@ async function round(roundTime, turnTime){
 	var numTurns = Math.ceil(roundTime/turnTime);
 	for(var k=0;k<numTurns;k++){
 		await turn(turnTime).then(() => {
-			turnSoundAlt.play();
 			console.log("turn "+k+" of "+numTurns+" over!")
 		});
 	}
 	console.log("round over!");
 	roundSoundAlt.play();
 	changeInfoPane("ROUND OVER", "warning", 'round')
-}
+}//end round
 
 //this function changes the GUI during the structure of a turn. it basically represents one whole turn.
 //it takes the length of a turn in seconds as an argument
 function turn(length){
+	skipped = false;
 	var critTime = Math.ceil(length*.2); //what's about 20% of the time?
 	var standbyTime = length-critTime;// whats about 80% of the time?
 
 	$('#skipTurn').attr('disabled', false);
 
 	var prom = new Promise(function(resolve, reject){
-	var skip;
 
-		countSecs(1).then(()=> { //this is one extra second of waiting for players to switch.
 			changeInfoPane("Player's Turn", "standby", 'round');
 			countSecs(standbyTime).then(() =>{
-				changeInfoPane("get ready...", "warning", 'round')
-				countSecs(critTime).then(() =>{
+				if(skipped){
+					console.log("we skip!");
+					turnSoundAlt.play();
 					changeInfoPane("NEXT PLAYER!", "critical", 'round')
-					resolve(true);
-				});
+					countSecs_unskippable(1).then(()=> {
+						resolve(true);
+					}) //this is one extra second of waiting for players to switch.
+				}
+				else{
+					changeInfoPane("get ready...", "warning", 'round')
+					countSecs(critTime).then(() =>{
+						turnSoundAlt.play();
+						changeInfoPane("NEXT PLAYER!", "critical", 'round')
+						countSecs_unskippable(1).then(()=> {
+							resolve(true);
+						}); //this is one extra second of waiting for players to switch.
+					});
+				}
 			});
-		});
-	});//end promise
-
-	return prom;
+});//end promise
+console.log('skipped:'+skipped);
+ return prom;
 
 }//end turn
 
 //this asyncronous function (like all async functions) returns a promise which calls the delay function in a loop with an await keyword
 //so that each subsequent call of delay waits until the promise returned by the previous delay is resolved (after 1 second). in short: it counts seconds as they pass.
 async function countSecs(numOfSecs){
-
 		for(var i = 0; i < numOfSecs; i++){
+			if(skipped){i = numOfSecs;}//if the global skip variable has been set to true, just skip all the counting.
+			else{await delay(1000)("tick: "+i).then(function(result){console.log(result);});}
+		}//end for
+}//end countSecs
 
-			$('#skipTurn').click(function(){
-				i = numOfSecs;
-			});
-
+//this function is just like the above, except it is not skipped by the global skip varible
+async function countSecs_unskippable(numOfSecs){
+		for(var i = 0; i < numOfSecs; i++){
 			await delay(1000)("tick: "+i).then(function(result){console.log(result);});
-		}
+		}//end for
 }//end countSecs
 
 //this function returns a function, which returns promise and then after waiting 1 second, resolves it.
@@ -161,6 +178,7 @@ function changeInfoPane(text, type, voteorround){
 				//add the selected class and change the text.
 				$(".roundInfoPane").addClass(type);
 				$(".roundInfoPane").html(text);
+				console.log("we added the infopane!");
 			}
 			else if(voteorround == 'vote'){
 				//remove all possible classes
