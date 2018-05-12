@@ -3,6 +3,7 @@ body{
 	align-items: center;
 	align-content: center;
 	text-align: center;
+	background: MidnightBlue;
 }
 .btn{
 	box-sizing: border-box;
@@ -103,7 +104,7 @@ body{
 	color: yellow;
 }
 
-.tapArea {
+.tapArea{
 	position: absolute;
 	top: 25%;
 	left: 25%;
@@ -113,6 +114,20 @@ body{
 	border-radius: 10px;
 	padding: 5px;
 }
+
+/* .tapArea {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 98%;
+	height: 98%;
+	padding: 5px;
+	border-radius: 10px;
+} */
+
+/* .skipping {
+	display: inline-block;
+} */
 
 /* .tapArea_wait {
 	position: absolute;
@@ -146,6 +161,7 @@ body{
 	border: 2px black solid;
 	border-radius: 5px;
 	padding: 5px;
+	background: #846899;
 }
 
 .marginUp {

@@ -5,6 +5,7 @@ var roundSound = $('#roundSound')[0];
 var turnSoundAlt = $('#turnSoundAlt')[0];
 var roundSoundAlt = $('#roundSoundAlt')[0];
 var voteSound = $('#voteSound')[0];
+var timeoutInterval;
 var skipped = false; //this is the global variable that tells the turn functions if the player has tried to skip his turn or not.
 //turnSound.play();
 
@@ -12,6 +13,8 @@ var skipped = false; //this is the global variable that tells the turn functions
 $('body').on('click','.skipTurn',function(){
 	skipped = true;
 	$(".tapArea").removeClass("skipTurn");
+	changeInfoPane("NEXT PLAYER!", "critical");
+	$(".skipping").html("...SKIPPING...");
 });//end skipped turn click;
 
 //this captures the click on the round start button
@@ -72,30 +75,35 @@ async function round(roundTime, turnTime){
 	console.log("round over!");
 	roundSoundAlt.play();
 
-	changeInfoPane("ROUND OVER!<br> tap to start chancellor veto", "wait")
-
-	$(".tapArea").addClass("chancellorVetoStart");
+	//these two lines are used for chancellor veto phase. defunct. no longer in rules. 
+	/* changeInfoPane("ROUND OVER!<br> tap to start chancellor veto", "wait")
+	$(".tapArea").addClass("chancellorVetoStart"); */
+	
+	$(".tapArea").addClass("voteStart");
+	changeInfoPane("Tap to start final Vote", "wait");
 }//end round
 
 //this function changes the GUI during the structure of a turn. it basically represents one whole turn.
 //it takes the length of a turn in seconds as an argument
 function turn(length){
 	skipped = false;
+	$(".skipping").html("");
 	$(".tapArea").addClass("skipTurn"); //this adds the skip turn class so we can check for it and see if someone tried to skip their turn
-
 	var critTime = Math.ceil(length*.2); //what's about 20% of the time?
 	var standbyTime = length-critTime;// whats about 80% of the time?
 
 	var prom = new Promise(function(resolve, reject){
 
-			changeInfoPane("Player's Turn <br> tap to skip remaining time", "standby");
+			changeInfoPane("Player's Turn <br> tap here when finished", "standby");
 			countSecs(standbyTime).then(() =>{
 				if(skipped){
 					turnSoundAlt.play();
+					clearInterval(timeoutInterval);
 					changeInfoPane("NEXT PLAYER!", "critical")
-					countSecs_unskippable(1).then(()=> {
+					/* countSecs_unskippable(1).then(()=> {
 						resolve(true);
-					}) //this is one extra second of waiting for players to switch.
+					}) //this is one extra second of waiting for players to switch. */
+					resolve(true);
 				}
 				else{
 					changeInfoPane("get ready...", "warning")
@@ -127,6 +135,7 @@ $("body").on('click', ".voteStart", function(){
 function runVote() {
 	skipped = false;
 	$(".tapArea").removeClass("voteStart");
+	$(".skipping").html("");
 	$(".tapArea").addClass("skipTurn");
 
 	var voteTime = parseInt($("#voteTime").val(),10);
@@ -164,6 +173,7 @@ $("body").on("click", ".chancellorVetoStart", function(){
 function runChancellorVeto() {
 	skipped = false;
 	$(".tapArea").removeClass("chancellorVetoStart");
+	$(".skipping").html("");
 	$(".tapArea").addClass("skipTurn");
 
 	var vetoTime = parseInt($("#chancellorTime").val(),10);
@@ -195,7 +205,10 @@ function runChancellorVeto() {
 async function countSecs(numOfSecs){
 		console.log("in countsecs: "+numOfSecs);
 		for(var i = 0; i < numOfSecs; i++){
-			if(skipped){i = numOfSecs;}//if the global skip variable has been set to true, just skip all the counting.
+			if(skipped){
+				clearInterval(timeoutInterval);
+				i = numOfSecs;
+			}//if the global skip variable has been set to true, just skip all the counting.
 			else{await delay(1000)("tick: "+i).then(function(result){console.log(result);});}
 		}//end for
 }//end countSecs
@@ -212,7 +225,7 @@ async function countSecs_unskippable(numOfSecs){
 function delay(ms){
 	return function(result){
 		return new Promise(function(resolve, reject){
-			setTimeout(function(){resolve(result);}, ms);
+			timeoutInterval = setTimeout(function(){resolve(result);}, ms);
 		})//end promise constructor
 	}//end result
 }//end delay
