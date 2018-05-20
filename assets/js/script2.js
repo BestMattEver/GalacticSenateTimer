@@ -14,6 +14,7 @@ $('body').on('click','.skipTurn',function(){
 	skipped = true;
 	$(".tapArea").removeClass("skipTurn");
 	changeInfoPane("NEXT PLAYER!", "critical");
+	turnSoundAlt.play();
 	$(".skipping").html("...SKIPPING...");
 });//end skipped turn click;
 
@@ -21,7 +22,8 @@ $('body').on('click','.skipTurn',function(){
 $("body").on('click', '.roundStart',function(){
 	$(".tapArea").removeClass("roundStart");//remove the roundStart class so we cant click it again.
 	turnSoundAlt.play(); // Play the empty element to get control for mobile
-  turnSoundAlt.src = 'assets/sounds/Judges_Gavel-SoundBible.com-1321455227.mp3'; // Set the real audio source
+  //turnSoundAlt.src = 'assets/sounds/Judges_Gavel-SoundBible.com-1321455227.mp3'; // Set the real audio source
+	turnSoundAlt.src = 'assets/sounds/gavelBang.mp3'; // Set the real audio source
 	//now, supposedly, we can play it.
 	roundSoundAlt.play(); // Play the empty element to get control for mobile
   roundSoundAlt.src = 'assets/sounds/Gavel_Bangs_4x-SoundBible.com-744905587.mp3'; // Set the real audio source
@@ -75,10 +77,10 @@ async function round(roundTime, turnTime){
 	console.log("round over!");
 	roundSoundAlt.play();
 
-	//these two lines are used for chancellor veto phase. defunct. no longer in rules. 
+	//these two lines are used for chancellor veto phase. defunct. no longer in rules.
 	/* changeInfoPane("ROUND OVER!<br> tap to start chancellor veto", "wait")
 	$(".tapArea").addClass("chancellorVetoStart"); */
-	
+
 	$(".tapArea").addClass("voteStart");
 	changeInfoPane("Tap to start final Vote", "wait");
 }//end round
@@ -97,13 +99,12 @@ function turn(length){
 			changeInfoPane("Player's Turn <br> tap here when finished", "standby");
 			countSecs(standbyTime).then(() =>{
 				if(skipped){
-					turnSoundAlt.play();
 					clearInterval(timeoutInterval);
-					changeInfoPane("NEXT PLAYER!", "critical")
-					/* countSecs_unskippable(1).then(()=> {
+					//changeInfoPane("NEXT PLAYER!", "critical")
+					countSecs_unskippable(1).then(()=> {
 						resolve(true);
-					}) //this is one extra second of waiting for players to switch. */
-					resolve(true);
+					}) //this is one extra second of waiting for players to switch.
+					//resolve(true);
 				}
 				else{
 					changeInfoPane("get ready...", "warning")
@@ -215,6 +216,7 @@ async function countSecs(numOfSecs){
 
 //this function is just like the above, except it cannot skipped by the global skip varible
 async function countSecs_unskippable(numOfSecs){
+	console.log("in unskippable");
 		for(var i = 0; i < numOfSecs; i++){
 			await delay(1000)("tick: "+i).then(function(result){console.log(result);});
 		}//end for

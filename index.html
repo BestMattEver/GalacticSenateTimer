@@ -6,61 +6,84 @@
     <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
   </head>
   <body>
-<div class="bigContainer">
-  <div class="roundContainer">
-      <div class="roundInfoPane">
-      <audio id="turnSound" src="assets/sounds/Buzzer-SoundBible.com-188422102.mp3" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
-      <audio id="turnSoundAlt" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
+    <div class="marginUp">
+      <span class="marginTitles">Who can vote </span>
+      <br>
+      <span class="marginText">(Two Cards)</span>
+    </div>
 
-      <audio id="roundSound" src="assets/sounds/Air_Horn-SoundBible.com-964603082.mp3" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
-      <audio id="roundSoundAlt" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
+    <div class="marginDown">
+      <span class="marginTitles">Space Bucks</span>
+      <br>
+      <span class="marginText">(One Card per Round)</span>
+    </div>
 
-      </div>
-      <div class = "roundControls">
-        Turn Time
-        <select id="turnTime" label="Turn Time">
-          <option value="5">5 sec</option>
-          <option value="10">10 sec</option>
-          <option value="15">15 sec</option>
-          <option value="20">20 sec</option>
-          <option value="25">25 sec</option>
-          <option value="30">30 sec</option>
-        </select>
-        <br />
-        Round Time
-        <select id="roundTime" label = "Round Time">
-          <option value="120">2 min-ish</option>
-          <option value="180">3 min-ish</option>
-          <option value="240">4 min-ish</option>
-          <option value="300">5 min-ish</option>
-          <option value="360">6 min-ish</option>
-          <option value="420">7 min-ish</option>
-        </select>
-        <button id="roundStart" class="btn" type="button">Start Round!</button>
-        <button id="skipTurn" class="btn" type="button" disabled>SkipTurn</button>
-      </div>
+    <div class="marginleft"><br><br><br><br><br><br><br><br><br><br><br><br>
+        <span class="marginTitles">Option A</span>
+        <br>
+        <span class="marginText">(One Card)</span>
+    </div>
+
+    <div class="marginRight"><br><br><br><br><br><br><br><br><br><br><br><br>
+        <span class="marginTitles">Option B</span>
+        <br>
+        <span class="marginText">(One Card)</span>
+    </div>
+
+<div class="options">
+    Turn Time
+    <select id="turnTime" label="Turn Time">
+      <option value="5">5 sec</option>
+      <option value="10">10 sec</option>
+      <option value="15">15 sec</option>
+      <option value="20">20 sec</option>
+      <option value="25">25 sec</option>
+      <option value="30">30 sec</option>
+    </select>
+    Round Time
+    <select id="roundTime" label = "Round Time">
+      <option value="120">2 min-ish</option>
+      <option value="180">3 min-ish</option>
+      <option value="240">4 min-ish</option>
+      <option value="300">5 min-ish</option>
+      <option value="360">6 min-ish</option>
+      <option value="420">7 min-ish</option>
+    </select>
+    <br>
+    <!-- Chancellor Time
+    <select id="chancellorTime" label = "Chancellor Time">
+      <option value="30">30 sec</option>
+      <option value="60">1 min</option>
+      <option value="90">1 min 30 sec</option>
+      <option value="120">2 min</option>
+      <option value="150">2 min 30 sec</option>
+      <option value="180">3 min</option>
+    </select> -->
+    Vote Time
+    <select id="voteTime" label = "vote Time">
+      <option value="30">30 sec</option>
+      <option value="60">1 min</option>
+      <option value="90">1 min 30 sec</option>
+      <option value="120">2 min</option>
+      <option value="150">2 min 30 sec</option>
+      <option value="180">3 min</option>
+    </select>
   </div>
 
-  <div class="voteContainer">
-      <div class="voteInfoPane">
-      <audio id="voteSound" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
+  <div class = "tapContainer">
+	<div class="tapArea roundStart wait">
+		Tap to start the round.
+	</div>
+	<div class="skipping">WHERE DOES THIS SHOW UP</div>
+  <div>
 
 
-      </div>
-      <div class = "voteControls">
-        Vote Time
-        <select id="voteTime" label = "vote Time">
-          <option value="30">30 sec</option>
-          <option value="60">1 min</option>
-          <option value="90">1 min 30 sec</option>
-          <option value="120">2 min</option>
-          <option value="150">2 min 30 sec</option>
-          <option value="180">3 min</option>
-        </select>
-        <button id="voteStart" class="btn" type="button">Start Vote!</button>
-      </div>
-  </div>
-</div>
+
+  <audio id="voteSound" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
+  <audio id="turnSound" src="assets/sounds/Buzzer-SoundBible.com-188422102.mp3" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
+  <audio id="turnSoundAlt" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
+  <audio id="roundSound" src="assets/sounds/Air_Horn-SoundBible.com-964603082.mp3" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
+  <audio id="roundSoundAlt" type="audio/mp3">Your browser does not support the &#60;audio&#62; element.</audio>
 
   <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
